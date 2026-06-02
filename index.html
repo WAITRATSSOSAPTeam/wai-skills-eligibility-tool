@@ -1,10 +1,35 @@
-<!-- ====================== WAI TSS/OSAP ELIGIBILITY CHECK TOOL - VERSION 14.4 AS OF 2 JUNE 2026 ====================== -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRA TSS/OSAP Eligibility Checker - William Angliss Institute</title>
+    
+    <!-- Exact fonts used on William Angliss website -->
+    <link href="https://fonts.googleapis.com/css?family=Karla:400,700|Poppins:700" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Karla', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f4f4f4;
+        }
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
 
-<section style="background: #f8f9fa; padding: 40px 30px; border-radius: 12px; margin: 30px 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+<!-- ====================== WAI TSS/OSAP ELIGIBILITY CHECK TOOL - VERSION 14.5 AS OF 2 JUNE 2026 ====================== -->
+
+<section style="background: #f8f9fa; padding: 40px 30px; border-radius: 12px; margin: 30px auto; max-width: 900px; font-family: 'Karla', system-ui, sans-serif; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
    
     <div style="text-align: center; margin-bottom: 20px;">
         <img src="https://www.angliss.edu.au/siteassets/international/tra_skills_assessment/logo/wai-logo-85-years_big.png"
-             alt="William Angliss Institute Logo"
+             alt="William Angliss Institute 85 Years Logo"
              style="height: auto; width: auto; max-width: 320px; display: block; margin: 0 auto;"
              loading="lazy">
     </div>
@@ -98,9 +123,12 @@
     </div>
 </div>
 
-<!-- Script -->
-
 <script>
+
+/* ====================== COUNTRY LISTS ====================== */
+
+/* Setting up TSS and OSAP nominated countries */
+
 const tssCountries = {
     "Baker": ["China", "Fiji", "Hong Kong SAR", "India", "Macau SAR", "Papua New Guinea", "Philippines", "South Africa", "Thailand", "Vietnam", "Zimbabwe"],
     "Chef": ["Bangladesh", "Brazil", "China", "Fiji", "Hong Kong SAR", "India", "Macau SAR", "Nepal", "Pakistan", "Papua New Guinea", "Philippines", "South Africa", "Thailand", "Vietnam", "Zimbabwe"],
@@ -115,6 +143,8 @@ const osapCountries = {
     "Pastrycook": ["Brazil", "China", "Fiji", "Hong Kong SAR", "India", "Iran", "Ireland", "Macau SAR", "Papua New Guinea", "Philippines", "Republic of Korea", "South Africa", "Sri Lanka", "Thailand", "United Arab Emirates", "United Kingdom", "Vietnam", "Zimbabwe"]
 };
 
+/* Populate Country Dropdown */
+
 document.addEventListener('DOMContentLoaded', () => {
     const countrySet = new Set();
     Object.values(tssCountries).flat().forEach(c => countrySet.add(c));
@@ -128,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dropdown.appendChild(opt);
     });
     const other = document.createElement('option');
-    other.value = "Other"; other.textContent = "Other - Not from a TRA nominated country / Opt-in";
+    other.value = "Other"; other.textContent = "Other - Not from a TRA nominated country / Opt-in OSAP";
     dropdown.appendChild(other);
 });
 
@@ -144,6 +174,8 @@ function showError(msg) {
     div.scrollIntoView({ behavior: "smooth" });
 }
 
+/* ====================== ELIGIBILITY CHECK ====================== */
+
 function checkEligibility() {
     const btn = document.getElementById('checkBtn');
     btn.disabled = true;
@@ -156,7 +188,7 @@ function checkEligibility() {
     let yearsExpInput = parseFloat(document.getElementById('yearsExperience').value) || 0;
     let recentMonthsInput = parseInt(document.getElementById('recentMonths').value) || 0;
 
-    let yearsExp = Math.min(yearsExpInput, 40);
+    let yearsExp = Math.min(yearsExpInput, 50);
     let recentMonths = Math.min(recentMonthsInput, 36);
 
     if (!occupation || !programType || !passportCountry || !formal) {
@@ -190,7 +222,7 @@ function checkEligibility() {
         <hr style="margin:15px 0;">
     `;
 
-    if (yearsExpInput > 40) html += `<p style="color:#FF9800;"><strong>Note:</strong> Total experience capped at 40 years.</p>`;
+    if (yearsExpInput > 40) html += `<p style="color:#FF9800;"><strong>Note:</strong> Total experience capped at 50 years.</p>`;
     if (recentMonthsInput > 36) html += `<p style="color:#FF9800;"><strong>Note:</strong> Months in last 3 years capped at 36.</p>`;
 
     if (requiresOptIn) {
@@ -201,7 +233,7 @@ function checkEligibility() {
         html += `<div style="background:#fff3e0; padding:16px; border-left:5px solid #FF9800; border-radius:6px; margin:15px 0;">
             <strong>Please verify your experience details</strong><br><br>
             You entered <strong>${recentMonthsInput} months</strong> recent experience, but only <strong>${yearsExpInput} years</strong> total.<br>
-            This is not mathematically possible.
+            This is not mathematically possible and could be a typo.
         </div>`;
     }
 
@@ -213,25 +245,55 @@ function checkEligibility() {
         </div>`;
     }
 
-    // mailto buttons
+    // ==================== EMAIL CONTENT ====================
 
     if (meetsExperience) {
         const subject = `TRA TSS/OSAP Pre-Assessment Request - ${occupation}`;
-        const body = `Dear Skills Assessment Team,%0D%0A%0D%0APlease review my pre-assessment:%0D%0A%0D%0AOccupation: ${occupation}%0D%0AProgram: ${programType}%0D%0ACountry: ${passportCountry}%0D%0AFormal Training: ${hasFormal ? "Yes" : "No"}%0D%0ATotal Experience: ${yearsExp} years%0D%0ARecent Experience: ${recentMonths} months%0D%0A%0D%0AI have attached my CV and supporting documents.%0D%0A%0D%0AThank you.`;
+        const body = `Dear Skills Assessment Team,%0D%0A%0D%0A` +
+            `I used the William Angliss Eligibility Checker Tool. Here is the result:%0D%0A%0D%0A` +
+            `Eligibility Outcome: I appear to be **Eligible**%0D%0A%0D%0A` +
+            `Occupation: ${occupation}%0D%0A` +
+            `Program: ${programType}%0D%0A` +
+            `Passport Country: ${passportCountry}%0D%0A` +
+            `Formal Training: ${hasFormal ? "Yes" : "No"}%0D%0A` +
+            `Total Experience: ${yearsExp} years (minimum ${minYears})%0D%0A` +
+            `Recent Experience: ${recentMonths} months in last 3 years (minimum 12)%0D%0A%0D%0A`;
+
+        if (requiresOptIn) body += `Note: This requires the OSAP Opt-In pathway.%0D%0A%0D%0A`;
+
+        body += `I have attached my CV and supporting documents.%0D%0A%0D%0A` +
+                `Thank you,%0D%0A%0D%0ABest regards`;
+
         html += `<p style="text-align:center; margin-top:25px;">
                     <a href="mailto:skills.assessment@angliss.edu.au?subject=${encodeURIComponent(subject)}&body=${body}" 
                        onclick="showSuccessMessage(); return true;"
-                       style="background:#0066CC; color:white; padding:14px 32px; border-radius:8px; text-decoration:none; font-weight:600; display:inline-block;">
+                       style="background:#0066CC; color:white; padding:17px 36px; font-size:17px; font-weight:700; border-radius:8px; text-decoration:none; display:inline-block;">
                         Start Free Pre-Assessment
                     </a>
                  </p>`;
     } else {
-        const body = `Dear Skills Assessment Team,%0D%0A%0D%0AI used the eligibility checker and did not meet the minimum requirements.%0D%0A%0D%0AOccupation: ${occupation}%0D%0AProgram: ${programType}%0D%0ACountry: ${passportCountry}%0D%0AExperience: ${yearsExp} years total, ${recentMonths} months recent.%0D%0A%0D%0ACould you please advise if I can still apply?%0D%0A%0D%0AThank you.`;
+        const subject = `TRA TSS/OSAP Eligibility Advice Request - ${occupation}`;
+        const body = `Dear Skills Assessment Team,%0D%0A%0D%0A` +
+            `I used the William Angliss Eligibility Checker Tool. Here is the result:%0D%0A%0D%0A` +
+            `ELIGIBILITY OUTCOME: I do not currently meet the minimum crtieria%0D%0A%0D%0A` +
+            `Occupation: ${occupation}%0D%0A` +
+            `Program: ${programType}%0D%0A` +
+            `Passport Country: ${passportCountry}%0D%0A` +
+            `Formal Training: ${hasFormal ? "Yes" : "No"}%0D%0A` +
+            `Total Experience: ${yearsExp} years (minimum ${minYears})%0D%0A` +
+            `Recent Experience: ${recentMonths} months in last 3 years (minimum 12)%0D%0A%0D%0A`;
+
+        if (requiresOptIn) body += `Note: This requires the OSAP Opt-In pathway.%0D%0A%0D%0A`;
+
+        body += `Could you please advise if I can still apply?%0D%0A%0D%0A` +
+                `I have attached my CV.%0D%0A%0D%0A` +
+                `Thank you,%0D%0A%0D%0ABest regards`;
+
         html += `<p style="text-align:center; margin-top:25px;">
-                    <a href="mailto:skills.assessment@angliss.edu.au?subject=TRA TSS/OSAP Eligibility Advice Request&body=${body}" 
+                    <a href="mailto:skills.assessment@angliss.edu.au?subject=${encodeURIComponent(subject)}&body=${body}" 
                        onclick="showAdviceSuccessMessage(); return true;"
-                       style="background:#D32F2F; color:white; padding:14px 32px; border-radius:8px; text-decoration:none; font-weight:600; display:inline-block;">
-                        Request Advice
+                       style="background:#D32F2F; color:white; padding:17px 36px; font-size:17px; font-weight:700; border-radius:8px; text-decoration:none; display:inline-block;">
+                        Request Advice from Skills Assessment Team
                     </a>
                  </p>`;
     }
@@ -245,27 +307,31 @@ function checkEligibility() {
     setTimeout(() => { btn.disabled = false; btn.textContent = "Check My Eligibility"; }, 800);
 }
 
+/* Success Messages */
+
 function showSuccessMessage() {
     setTimeout(() => {
-        const confirmed = confirm("Thank you for using the William Angliss Skills Assessment Eligibility Tool.\n\n" +
+        const confirmed = confirm("Thank you for using the William Angliss Skills Assessment Eligibility Checker Tool.\n\n" +
             "Your pre-assessment request has been opened in your email client.\n\n" +
-            "Please attach your CV and supporting documents before sending.\n\n" +
+            "Please attach your CV before sending.\n\n" +
             "Our Skills Assessment Team will review your submission and respond within 3 business days.\n\n" +
-            "Click OK to return to the Skills Assessment page.");
+            "Click OK to return to the our Skills Assessment page.");
         if (confirmed) window.location.href = "https://www.angliss.edu.au/industry/tra-tss-osap-skills-assessment";
     }, 300);
 }
 
 function showAdviceSuccessMessage() {
     setTimeout(() => {
-        const confirmed = confirm("Thank you for using the William Angliss Skills Assessment Eligibility Tool.\n\n" +
+        const confirmed = confirm("Thank you for using the William Angliss Skills Assessment Eligibility Checker Tool.\n\n" +
             "Your request for eligibility advice has been opened in your email client.\n\n" +
             "Please send the email so our team can assess your individual circumstances.\n\n" +
             "The Skills Assessment Team will provide a response within 3 business days.\n\n" +
-            "Click OK to return to the Skills Assessment page.");
+            "Click OK to return to our Skills Assessment page.");
         if (confirmed) window.location.href = "https://www.angliss.edu.au/industry/tra-tss-osap-skills-assessment";
     }, 300);
 }
+
+/* Modal Functions */
 
 function openPreAssessmentModal() {
     document.getElementById('preAssessmentModal').style.display = 'block';
@@ -281,3 +347,6 @@ window.addEventListener('click', (e) => {
     if (e.target.id === 'preAssessmentModal') closePreAssessmentModal();
 });
 </script>
+
+</body>
+</html>
