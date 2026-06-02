@@ -1,4 +1,4 @@
-<!-- ====================== WAI TSS/OSAP ELIGIBILITY CHECK TOOL - VERSION 14.3 AS OF 2 JUNE 2026  ====================== -->
+<!-- ====================== WAI TSS/OSAP ELIGIBILITY CHECK TOOL - VERSION 14.4 AS OF 2 JUNE 2026 ====================== -->
 
 <section style="background: #f8f9fa; padding: 40px 30px; border-radius: 12px; margin: 30px 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
    
@@ -61,7 +61,7 @@
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
                 <div>
-                    <label style="display:block; margin-bottom:7px; font-weight:600; color:#333; font-size:15px;">Total years of relevant full-time equivalent paid experience</label>
+                    <label style="display:block; margin-bottom:7px; font-weight:600; color:#333; font-size:15px;">Total years of relevant full-time equivalent paid experience <span style="font-size:13px; color:#666;">(max 40)</span></label>
                     <input type="number" id="yearsExperience" min="0" step="0.1" placeholder="e.g. 4" style="width:100%; padding:12px; border-radius:6px; border:1px solid #ccc; font-size:15px;" required>
                 </div>
                 <div>
@@ -80,7 +80,7 @@
     <div id="result" style="margin-top:35px; display:none; padding:25px; border-radius:12px; line-height:1.6; border:1px solid #eee;"></div>
 </section>
 
-<!-- Pre-Assessment Modal -->
+<!-- ====================== PRE-ASSESSMENT MODAL ====================== -->
 
 <div id="preAssessmentModal" style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.75);">
     <div style="background-color: white; margin: 5% auto; padding: 35px; width: 90%; max-width: 720px; border-radius: 12px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
@@ -98,7 +98,12 @@
     </div>
 </div>
 
+
+<!-- ====================== JAVASCRIPT ====================== -->
+
 <script>
+/* ====================== COUNTRY LISTS ====================== */
+
 const tssCountries = {
     "Baker": ["China", "Fiji", "Hong Kong SAR", "India", "Macau SAR", "Papua New Guinea", "Philippines", "South Africa", "Thailand", "Vietnam", "Zimbabwe"],
     "Chef": ["Bangladesh", "Brazil", "China", "Fiji", "Hong Kong SAR", "India", "Macau SAR", "Nepal", "Pakistan", "Papua New Guinea", "Philippines", "South Africa", "Thailand", "Vietnam", "Zimbabwe"],
@@ -107,12 +112,13 @@ const tssCountries = {
 };
 
 const osapCountries = {
-    "Baker": ["China", "Fiji", "Hong Kong SAR", "India", "Ireland", "Macau SAR", "Papua New Guinea", "Philippines", "Republic of Korea", "South Africa", "Sri Lanka", "Thailand", "United Kingdom", "Vietnam", "Zimbabwe"],
+    "Baker": ["China", "Fiji", "Hong Kong SAR", "India", "Ireland", "Macau SAR", "Papua New Guinea", "Philippines", "Republic of Korea", "South Africa", "Sri Lanka", "Thailand", "United Arab Emirates", "United Kingdom", "Vietnam", "Zimbabwe"],
     "Chef": ["Bangladesh", "Brazil", "China", "Fiji", "Hong Kong SAR", "India", "Iran", "Ireland", "Macau SAR", "Nepal", "Pakistan", "Papua New Guinea", "Philippines", "Republic of Korea", "South Africa", "Sri Lanka", "Thailand", "United Arab Emirates", "United Kingdom", "Vietnam", "Zimbabwe"],
     "Cook": ["Bangladesh", "Brazil", "China", "Fiji", "Hong Kong SAR", "India", "Iran", "Ireland", "Macau SAR", "Nepal", "Pakistan", "Papua New Guinea", "Philippines", "Republic of Korea", "South Africa", "Sri Lanka", "Thailand", "United Arab Emirates", "United Kingdom", "Vietnam", "Zimbabwe"],
     "Pastrycook": ["Brazil", "China", "Fiji", "Hong Kong SAR", "India", "Iran", "Ireland", "Macau SAR", "Papua New Guinea", "Philippines", "Republic of Korea", "South Africa", "Sri Lanka", "Thailand", "United Arab Emirates", "United Kingdom", "Vietnam", "Zimbabwe"]
 };
 
+/* Populate Country Dropdown */
 document.addEventListener('DOMContentLoaded', () => {
     const countrySet = new Set();
     Object.values(tssCountries).flat().forEach(c => countrySet.add(c));
@@ -122,11 +128,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const dropdown = document.getElementById('passportCountry');
     sorted.forEach(country => {
         const opt = document.createElement('option');
-        opt.value = country; opt.textContent = country;
+        opt.value = country; 
+        opt.textContent = country;
         dropdown.appendChild(opt);
     });
+    
     const other = document.createElement('option');
-    other.value = "Other"; other.textContent = "Other - Not from a TRA nominated country / Opt-in";
+    other.value = "Other";
+    other.textContent = "Other - Not from a TRA nominated country / Opt-in";
     dropdown.appendChild(other);
 });
 
@@ -142,6 +151,8 @@ function showError(msg) {
     div.scrollIntoView({ behavior: "smooth" });
 }
 
+/* ====================== MAIN CHECK FUNCTION ====================== */
+
 function checkEligibility() {
     const btn = document.getElementById('checkBtn');
     btn.disabled = true;
@@ -151,17 +162,16 @@ function checkEligibility() {
     const programType = document.getElementById('programType').value;
     const passportCountry = document.getElementById('passportCountry').value;
     const formal = document.getElementById('formalTraining').value;
-    let yearsExp = parseFloat(document.getElementById('yearsExperience').value) || 0;
+    let yearsExpInput = parseFloat(document.getElementById('yearsExperience').value) || 0;
     let recentMonthsInput = parseInt(document.getElementById('recentMonths').value) || 0;
 
+    let yearsExp = Math.min(yearsExpInput, 40);
     let recentMonths = Math.min(recentMonthsInput, 36);
 
     if (!occupation || !programType || !passportCountry || !formal) {
         btn.disabled = false; btn.textContent = "Check My Eligibility";
         return showError("Please complete all fields.");
     }
-
-    if (yearsExp > 40) yearsExp = 40;
 
     const recentYears = recentMonths / 12;
     const unrealistic = recentYears > yearsExp + 0.1;
@@ -189,18 +199,21 @@ function checkEligibility() {
         <hr style="margin:15px 0;">
     `;
 
+    if (yearsExpInput > 40) {
+        html += `<p style="color:#FF9800;"><strong>Note:</strong> Total experience has been capped at 40 years (maximum realistic value).</p>`;
+    }
     if (recentMonthsInput > 36) {
         html += `<p style="color:#FF9800;"><strong>Note:</strong> Months in the last 3 years cannot exceed 36. Your input has been adjusted to 36 months.</p>`;
     }
 
     if (requiresOptIn) {
-        html += `<p style="color:#E65100;"><strong>Opt-In Pathway:</strong> Your passport country is not on the list of TRA nominated countries. You can still apply for OSAP via the Opt-In pathway.</p>`;
+        html += `<p style="color:#E65100;"><strong>Opt-In Pathway:</strong> ${occupation} from <strong>${passportCountry}</strong> is not on the list of TRA nominated countries. You can still apply for OSAP via the Opt-In pathway.</p>`;
     }
 
     if (unrealistic) {
         html += `<div style="background:#fff3e0; padding:16px; border-left:5px solid #FF9800; border-radius:6px; margin:15px 0;">
             <strong>Please verify your experience details</strong><br><br>
-            You entered <strong>${recentMonthsInput} months</strong> of recent experience, but only <strong>${yearsExp} years</strong> total.<br>
+            You entered <strong>${recentMonthsInput} months</strong> of recent experience, but only <strong>${yearsExpInput} years</strong> total.<br>
             This is not mathematically possible.
         </div>`;
     }
@@ -213,6 +226,8 @@ function checkEligibility() {
         </div>`;
     }
 
+    // Buttons
+
     if (meetsExperience) {
         const subject = `TRA ${programType} Pre-Assessment Request - ${occupation}`;
         const body = `Dear Skills Assessment Team,%0D%0A%0D%0APlease review my pre-assessment:%0D%0AOccupation: ${occupation}%0D%0AProgram: ${programType}%0D%0ACountry: ${passportCountry}%0D%0AFormal Training: ${hasFormal ? "Yes" : "No"}%0D%0ATotal Experience: ${yearsExp} years%0D%0ARecent Experience: ${recentMonths} months%0D%0A%0D%0AI have attached my CV.%0D%0A%0D%0AThank you.`;
@@ -224,7 +239,7 @@ function checkEligibility() {
                     </a>
                  </p>`;
     } else {
-        const body = `Dear Skills Assessment Team,%0D%0A%0D%0AI used the eligibility checker and did not meet the minimum requirements.%0D%0AOccupation: ${occupation}%0D%0ACountry: ${passportCountry}%0D%0AExperience: ${yearsExp} years total, ${recentMonths} months recent.%0D%0A%0D%0ACould you please advise if I can still apply?%0D%0A%0D%0AI have attached my CV.%0D%0A%0D%0AThank you.`;
+        const body = `Dear Skills Assessment Team,%0D%0A%0D%0AI used the eligibility checker and did not meet the minimum requirements.%0D%0AOccupation: ${occupation}%0D%0ACountry: ${passportCountry}%0D%0AExperience: ${yearsExp} years total, ${recentMonths} months recent.%0D%0A%0D%0ACould you please advise if I can still apply?%0D%0A%0D%0AThank you.`;
         html += `<p style="text-align:center; margin-top:25px;">
                     <a href="mailto:skills.assessment@angliss.edu.au?subject=TRA TSS/OSAP Eligibility Advice Request&body=${body}" 
                        onclick="showAdviceSuccessMessage(); return true;"
