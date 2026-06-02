@@ -1,54 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<!-- ====================== WAI TSS/OSAP ELIGIBILITY CHECK TOOL - VERSION 14.5 AS OF 2 JUNE 2026 ====================== -->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TRA TSS/OSAP Eligibility Checker - William Angliss Institute</title>
-      
-    <link href="https://fonts.googleapis.com/css?family=Karla:400,700|Poppins:700" rel="stylesheet">
+    
+        <link href="https://fonts.googleapis.com/css?family=Karla:400,700|Poppins:700" rel="stylesheet">
     
     <style>
         body {
             font-family: 'Karla', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #f4f4f4;
             margin: 0;
             padding: 20px;
-            background: #f4f4f4;
+        }
+        .tool-container {
+            background: white;
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: #f8f9fa;
+            padding: 40px 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        .header img {
+            max-width: 280px;
+            margin-bottom: 20px;
+        }
+        .content {
+            padding: 40px 30px;
         }
         h2 {
             font-family: 'Poppins', sans-serif;
             font-weight: 700;
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+        select, input[type="number"] {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 6px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #333;
+        }
+        button {
+            width: 100%;
+            padding: 18px;
+            background: #FF9F1C;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 25px;
+        }
+        #result {
+            margin-top: 35px;
+            padding: 30px;
+            border-radius: 12px;
+            line-height: 1.6;
+            border: 1px solid #eee;
         }
     </style>
 </head>
+
 <body>
 
-<!-- ====================== WAI TSS/OSAP ELIGIBILITY CHECK TOOL - VERSION 14.5 AS OF 2 JUNE 2026 ====================== -->
-
-<section style="background: #f8f9fa; padding: 40px 30px; border-radius: 12px; margin: 30px auto; max-width: 900px; font-family: 'Karla', system-ui, sans-serif; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
-   
-    <div style="text-align: center; margin-bottom: 20px;">
-        <img src="https://www.angliss.edu.au/siteassets/international/tra_skills_assessment/logo/wai-logo-85-years_big.png"
-             alt="William Angliss Institute 85 Years Logo"
-             style="height: auto; width: auto; max-width: 320px; display: block; margin: 0 auto;"
-             loading="lazy">
+<div class="tool-container">
+    <div class="header">
+        <img src="https://www.angliss.edu.au/siteassets/international/tra_skills_assessment/logo/wai-logo-85-years_big.png" 
+             alt="William Angliss Institute" loading="lazy">
+        <h2>Am I Eligible to Apply for TRA TSS/OSAP Skills Assessment?</h2>
+        <p style="color:#444; margin:0; font-size:15.5px;">Find out if William Angliss Institute can assess your culinary or bakery trade skills for Australian migration</p>
     </div>
 
-    <h2 style="text-align: center; color: #1A1A1A; font-weight: 700; font-size: 26px; margin-bottom: 12px;">Am I Eligible to Apply for TRA TSS/OSAP Skills Assessment?</h2>
-   
-    <p style="text-align: center; max-width: 720px; margin: 0 auto 18px; font-size: 15px; color: #333; line-height: 1.5;">
-        Find out if William Angliss Institute can assess your culinary or bakery trade skills for Australian migration
-    </p>
-    
-    <p style="text-align: center; max-width: 680px; margin: 0 auto 32px; font-size: 15px; color: #444; line-height: 1.5;">
-        As Australia’s leading specialist in hospitality, we understand commercial kitchens and retail bakeries. 
-        We are a TRA-authorised assessing body with over 85 years of expertise.
-    </p>
-
-    <div style="max-width: 700px; margin: 0 auto;">
+    <div class="content">
         <form id="eligibilityForm" onsubmit="event.preventDefault(); checkEligibility();">
-            <div style="margin-bottom: 18px;">
-                <label style="display:block; margin-bottom:7px; font-weight:600; color:#333; font-size:15px;">My Nominated Occupation</label>
-                <select id="occupation" required style="width:100%; padding:12px; border-radius:6px; border:1px solid #ccc; font-size:15px;">
+            <div style="margin-bottom: 20px;">
+                <label>My Nominated Occupation</label>
+                <select id="occupation" required>
                     <option value="">Select Occupation</option>
                     <option value="Baker">Baker</option>
                     <option value="Chef">Chef or Pastry Chef</option>
@@ -57,9 +103,9 @@
                 </select>
             </div>
 
-            <div style="margin-bottom: 18px;">
-                <label style="display:block; margin-bottom:7px; font-weight:600; color:#333; font-size:15px;">TRA Assessment Program</label>
-                <select id="programType" required style="width:100%; padding:12px; border-radius:6px; border:1px solid #ccc; font-size:15px;">
+            <div style="margin-bottom: 20px;">
+                <label>TRA Assessment Program</label>
+                <select id="programType" required>
                     <option value="">Select Assessment Program</option>
                     <option value="TSS">TSS (Subclass 482 visa)</option>
                     <option value="OSAP">OSAP (Other Skilled visa subclasses 186, 189, 190, 491, 494)</option>
@@ -67,42 +113,39 @@
                 </select>
             </div>
 
-            <div style="margin-bottom: 18px;">
-                <label style="display:block; margin-bottom:7px; font-weight:600; color:#333; font-size:15px;">My Passport Country</label>
-                <select id="passportCountry" required style="width:100%; padding:12px; border-radius:6px; border:1px solid #ccc; font-size:15px;">
+            <div style="margin-bottom: 20px;">
+                <label>My Passport Country</label>
+                <select id="passportCountry" required>
                     <option value="">Select Passport Country</option>
                 </select>
             </div>
 
-            <div style="margin-bottom: 18px;">
-                <label style="display:block; margin-bottom:7px; font-weight:600; color:#333; font-size:15px;">My Formal Training / Qualification</label>
-                <select id="formalTraining" required style="width:100%; padding:12px; border-radius:6px; border:1px solid #ccc; font-size:15px;">
+            <div style="margin-bottom: 20px;">
+                <label>My Formal Training / Qualification</label>
+                <select id="formalTraining" required>
                     <option value="">Select...</option>
                     <option value="Yes">Yes - Formal qualification (Australian or Overseas)</option>
                     <option value="No">No formal training or qualification</option>
                 </select>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                 <div>
-                    <label style="display:block; margin-bottom:7px; font-weight:600; color:#333; font-size:15px;">Total years of relevant full-time equivalent paid experience <span style="font-size:13px; color:#666;">(max 40)</span></label>
-                    <input type="number" id="yearsExperience" min="0" step="0.1" placeholder="e.g. 4" style="width:100%; padding:12px; border-radius:6px; border:1px solid #ccc; font-size:15px;" required>
+                    <label>Total years of relevant full-time equivalent paid experience <span style="font-size:13px;color:#666;">(max 40)</span></label>
+                    <input type="number" id="yearsExperience" min="0" step="0.1" placeholder="e.g. 4" required>
                 </div>
                 <div>
-                    <label style="display:block; margin-bottom:7px; font-weight:600; color:#333; font-size:15px;">Total months of recent experience in last 3 years <span style="font-size:13px; color:#666;">(max 36)</span></label>
-                    <input type="number" id="recentMonths" min="0" max="36" placeholder="e.g. 15" style="width:100%; padding:12px; border-radius:6px; border:1px solid #ccc; font-size:15px;" required>
+                    <label>Total months of recent experience in last 3 years <span style="font-size:13px;color:#666;">(max 36)</span></label>
+                    <input type="number" id="recentMonths" min="0" max="36" placeholder="e.g. 15" required>
                 </div>
             </div>
 
-            <button type="button" id="checkBtn" onclick="checkEligibility()"
-                    style="margin-top:28px; background:#FF9F1C; color:white; padding:16px 40px; width:100%; border:none; border-radius:8px; font-size:17px; font-weight:600; cursor:pointer;">
-                Check My Eligibility
-            </button>
+            <button type="button" id="checkBtn" onclick="checkEligibility()">Check My Eligibility</button>
         </form>
-    </div>
 
-    <div id="result" style="margin-top:35px; display:none; padding:25px; border-radius:12px; line-height:1.6; border:1px solid #eee;"></div>
-</section>
+        <div id="result" style="display:none;"></div>
+    </div>
+</div>
 
 <!-- Pre-Assessment Modal -->
 
@@ -122,11 +165,10 @@
     </div>
 </div>
 
+
 <script>
 
-/* ====================== COUNTRY LISTS ====================== */
-
-/* Setting up TSS and OSAP nominated countries */
+/* ====================== TRA COUNTRY LISTS ====================== */
 
 const tssCountries = {
     "Baker": ["China", "Fiji", "Hong Kong SAR", "India", "Macau SAR", "Papua New Guinea", "Philippines", "South Africa", "Thailand", "Vietnam", "Zimbabwe"],
@@ -169,11 +211,10 @@ function showError(msg) {
     const div = document.getElementById('result');
     div.innerHTML = `<p style="color:#D32F2F; font-weight:600; text-align:center; font-size:16px;">${msg}</p>`;
     div.style.display = 'block';
-    div.style.background = "#fff3e0";
     div.scrollIntoView({ behavior: "smooth" });
 }
 
-/* ====================== ELIGIBILITY CHECK ====================== */
+/* ====================== MAIN ELIGIBILITY CHECKS ====================== */
 
 function checkEligibility() {
     const btn = document.getElementById('checkBtn');
@@ -187,11 +228,12 @@ function checkEligibility() {
     let yearsExpInput = parseFloat(document.getElementById('yearsExperience').value) || 0;
     let recentMonthsInput = parseInt(document.getElementById('recentMonths').value) || 0;
 
-    let yearsExp = Math.min(yearsExpInput, 50);
+    let yearsExp = Math.min(yearsExpInput, 40);
     let recentMonths = Math.min(recentMonthsInput, 36);
 
     if (!occupation || !programType || !passportCountry || !formal) {
-        btn.disabled = false; btn.textContent = "Check My Eligibility";
+        btn.disabled = false;
+        btn.textContent = "Check My Eligibility";
         return showError("Please complete all fields.");
     }
 
@@ -221,7 +263,7 @@ function checkEligibility() {
         <hr style="margin:15px 0;">
     `;
 
-    if (yearsExpInput > 40) html += `<p style="color:#FF9800;"><strong>Note:</strong> Total experience capped at 50 years.</p>`;
+    if (yearsExpInput > 40) html += `<p style="color:#FF9800;"><strong>Note:</strong> Total experience capped at 40 years.</p>`;
     if (recentMonthsInput > 36) html += `<p style="color:#FF9800;"><strong>Note:</strong> Months in last 3 years capped at 36.</p>`;
 
     if (requiresOptIn) {
@@ -232,7 +274,7 @@ function checkEligibility() {
         html += `<div style="background:#fff3e0; padding:16px; border-left:5px solid #FF9800; border-radius:6px; margin:15px 0;">
             <strong>Please verify your experience details</strong><br><br>
             You entered <strong>${recentMonthsInput} months</strong> recent experience, but only <strong>${yearsExpInput} years</strong> total.<br>
-            This is not mathematically possible and could be a typo.
+            This is not mathematically possible.
         </div>`;
     }
 
@@ -244,24 +286,21 @@ function checkEligibility() {
         </div>`;
     }
 
-    // ==================== EMAIL CONTENT ====================
+    // Email Content
 
     if (meetsExperience) {
         const subject = `TRA TSS/OSAP Pre-Assessment Request - ${occupation}`;
         const body = `Dear Skills Assessment Team,%0D%0A%0D%0A` +
-            `I used the William Angliss Eligibility Checker Tool. Here is the result:%0D%0A%0D%0A` +
-            `Eligibility Outcome: I appear to be **Eligible**%0D%0A%0D%0A` +
+            `I used the William Angliss Eligibility Checker Tool.%0D%0A%0D%0A` +
+            `ELIGIBILITY OUTCOME: I APPEAR TO BE ELIGIBLE%0D%0A%0D%0A` +
             `Occupation: ${occupation}%0D%0A` +
             `Program: ${programType}%0D%0A` +
             `Passport Country: ${passportCountry}%0D%0A` +
             `Formal Training: ${hasFormal ? "Yes" : "No"}%0D%0A` +
-            `Total Experience: ${yearsExp} years (minimum ${minYears})%0D%0A` +
-            `Recent Experience: ${recentMonths} months in last 3 years (minimum 12)%0D%0A%0D%0A`;
-
-        if (requiresOptIn) body += `Note: This requires the OSAP Opt-In pathway.%0D%0A%0D%0A`;
-
-        body += `I have attached my CV and supporting documents.%0D%0A%0D%0A` +
-                `Thank you,%0D%0A%0D%0ABest regards`;
+            `Total Experience: ${yearsExp} years%0D%0A` +
+            `Recent Experience: ${recentMonths} months%0D%0A%0D%0A` +
+            (requiresOptIn ? `Note: Requires OSAP Opt-In pathway.%0D%0A%0D%0A` : ``) +
+            `I have attached my CV.%0D%0A%0D%0AThank you,%0D%0A%0D%0ABest regards`;
 
         html += `<p style="text-align:center; margin-top:25px;">
                     <a href="mailto:skills.assessment@angliss.edu.au?subject=${encodeURIComponent(subject)}&body=${body}" 
@@ -273,20 +312,17 @@ function checkEligibility() {
     } else {
         const subject = `TRA TSS/OSAP Eligibility Advice Request - ${occupation}`;
         const body = `Dear Skills Assessment Team,%0D%0A%0D%0A` +
-            `I used the William Angliss Eligibility Checker Tool. Here is the result:%0D%0A%0D%0A` +
-            `ELIGIBILITY OUTCOME: I do not currently meet the minimum crtieria%0D%0A%0D%0A` +
+            `I used the William Angliss Eligibility Checker Tool.%0D%0A%0D%0A` +
+            `ELIGIBILITY OUTCOME: I DO NOT CURRENTLY MEET THE MINIMUM CRITERIA%0D%0A%0D%0A` +
             `Occupation: ${occupation}%0D%0A` +
             `Program: ${programType}%0D%0A` +
             `Passport Country: ${passportCountry}%0D%0A` +
             `Formal Training: ${hasFormal ? "Yes" : "No"}%0D%0A` +
-            `Total Experience: ${yearsExp} years (minimum ${minYears})%0D%0A` +
-            `Recent Experience: ${recentMonths} months in last 3 years (minimum 12)%0D%0A%0D%0A`;
-
-        if (requiresOptIn) body += `Note: This requires the OSAP Opt-In pathway.%0D%0A%0D%0A`;
-
-        body += `Could you please advise if I can still apply?%0D%0A%0D%0A` +
-                `I have attached my CV.%0D%0A%0D%0A` +
-                `Thank you,%0D%0A%0D%0ABest regards`;
+            `Total Experience: ${yearsExp} years%0D%0A` +
+            `Recent Experience: ${recentMonths} months%0D%0A%0D%0A` +
+            (requiresOptIn ? `Note: Requires OSAP Opt-In pathway.%0D%0A%0D%0A` : ``) +
+            `Could you please advise if I can still apply?%0D%0A%0D%0A` +
+            `I have attached my CV.%0D%0A%0D%0AThank you,%0D%0A%0D%0ABest regards`;
 
         html += `<p style="text-align:center; margin-top:25px;">
                     <a href="mailto:skills.assessment@angliss.edu.au?subject=${encodeURIComponent(subject)}&body=${body}" 
@@ -300,51 +336,31 @@ function checkEligibility() {
     const resultDiv = document.getElementById('result');
     resultDiv.innerHTML = html;
     resultDiv.style.display = 'block';
-    resultDiv.style.background = meetsExperience ? "#e8f5e9" : "#fff3e0";
     resultDiv.scrollIntoView({ behavior: "smooth" });
 
-    setTimeout(() => { btn.disabled = false; btn.textContent = "Check My Eligibility"; }, 800);
+    setTimeout(() => { 
+        btn.disabled = false; 
+        btn.textContent = "Check My Eligibility"; 
+    }, 600);
 }
-
-/* Success Messages */
 
 function showSuccessMessage() {
     setTimeout(() => {
-        const confirmed = confirm("Thank you for using the William Angliss Skills Assessment Eligibility Checker Tool.\n\n" +
-            "Your pre-assessment request has been opened in your email client.\n\n" +
-            "Please attach your CV before sending.\n\n" +
-            "Our Skills Assessment Team will review your submission and respond within 3 business days.\n\n" +
-            "Click OK to return to the our Skills Assessment page.");
+        const confirmed = confirm("Thank you!\n\nYour pre-assessment request has been opened in your email client.\n\nPlease attach your CV before sending.\n\nOur team will respond within 3 business days.\n\nClick OK to return.");
         if (confirmed) window.location.href = "https://www.angliss.edu.au/industry/tra-tss-osap-skills-assessment";
     }, 300);
 }
 
 function showAdviceSuccessMessage() {
     setTimeout(() => {
-        const confirmed = confirm("Thank you for using the William Angliss Skills Assessment Eligibility Checker Tool.\n\n" +
-            "Your request for eligibility advice has been opened in your email client.\n\n" +
-            "Please send the email so our team can assess your individual circumstances.\n\n" +
-            "The Skills Assessment Team will provide a response within 3 business days.\n\n" +
-            "Click OK to return to our Skills Assessment page.");
+        const confirmed = confirm("Thank you!\n\nYour advice request has been opened in your email client.\n\nPlease send the email.\n\nOur team will respond within 3 business days.\n\nClick OK to return.");
         if (confirmed) window.location.href = "https://www.angliss.edu.au/industry/tra-tss-osap-skills-assessment";
     }, 300);
 }
 
-/* Modal Functions */
-
-function openPreAssessmentModal() {
-    document.getElementById('preAssessmentModal').style.display = 'block';
-    document.body.style.overflow = 'hidden';
-}
-
 function closePreAssessmentModal() {
     document.getElementById('preAssessmentModal').style.display = 'none';
-    document.body.style.overflow = 'visible';
 }
-
-window.addEventListener('click', (e) => {
-    if (e.target.id === 'preAssessmentModal') closePreAssessmentModal();
-});
 </script>
 
 </body>
