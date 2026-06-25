@@ -115,7 +115,6 @@
                 </select>
             </div>
 
-            <!-- NEW FIELD -->
             <div style="margin-bottom: 20px;">
                 <label>My Preferred Specialisation</label>
                 <select id="specialisation" required>
@@ -291,6 +290,8 @@ function checkEligibility() {
         const body = `Dear Skills Assessment Team,%0D%0A%0D%0A` +
             `I used the William Angliss TRA TSS/OSAP Eligibility Checker Tool.%0D%0A%0D%0A` +
             `ELIGIBILITY OUTCOME: I APPEAR TO BE ELIGIBLE%0D%0A%0D%0A` +
+            `First Name: [Your First Name]%0D%0A` +
+            `Last Name: [Your Last Name]%0D%0A` +
             `Occupation: ${occupationText}%0D%0A` +
             `Preferred Specialisation: ${specialisationText}%0D%0A` +
             `Program: ${programType}%0D%0A` +
@@ -313,6 +314,8 @@ function checkEligibility() {
         const body = `Dear Skills Assessment Team,%0D%0A%0D%0A` +
             `I used the William Angliss TRA TSS/OSAP Eligibility Checker Tool.%0D%0A%0D%0A` +
             `ELIGIBILITY OUTCOME: I DO NOT CURRENTLY MEET THE MINIMUM CRITERIA%0D%0A%0D%0A` +
+            `First Name: [Your First Name]%0D%0A` +
+            `Last Name: [Your Last Name]%0D%0A` +
             `Occupation: ${occupationText}%0D%0A` +
             `Preferred Specialisation: ${specialisationText}%0D%0A` +
             `Program: ${programType}%0D%0A` +
@@ -328,7 +331,7 @@ function checkEligibility() {
                     <a href="mailto:skills.assessment@angliss.edu.au?subject=${encodeURIComponent(subject)}&body=${body}"
                        onclick="showAdviceSuccessMessage(); return true;"
                        style="background:#D32F2F; color:white; padding:17px 36px; font-size:17px; font-weight:700; border-radius:8px; text-decoration:none; display:inline-block;">
-                        Request Advice from our Specialists
+                        Request Advice from Skills Assessment Team
                     </a>
                  </p>`;
     }
@@ -343,14 +346,14 @@ function showSuccessMessage() {
     setTimeout(() => {
         const confirmed = confirm("Thank you!\n\nYour pre-assessment request has been opened in your email client.\n\nPlease attach your CV before sending.\n\nOur team will respond within 3 business days.\n\nClick OK to return.");
         if (confirmed) window.location.href = "https://www.angliss.edu.au/industry/tra-tss-osap-skills-assessment";
-    }, 400);
+    }, 300);
 }
 
 function showAdviceSuccessMessage() {
     setTimeout(() => {
         const confirmed = confirm("Thank you!\n\nYour advice request has been opened in your email client.\n\nPlease send the email.\n\nOur team will respond within 3 business days.\n\nClick OK to return.");
         if (confirmed) window.location.href = "https://www.angliss.edu.au/industry/tra-tss-osap-skills-assessment";
-    }, 400);
+    }, 300);
 }
 </script>
 </body>
